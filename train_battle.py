@@ -46,11 +46,7 @@ if __name__ == '__main__':
         level=logging.WARN + 10 * (args.quiet - args.verbose),
         format=dbg_format if args.debug else None
     )
-
     tf.logging.set_verbosity(tf.logging.ERROR)
-    np.set_printoptions(precision=2)
-
-    logs: List[TurnLog] = []
 
     teams: List[Team] = [
         # プレイヤーチームのユニット構成
@@ -128,7 +124,5 @@ if __name__ == '__main__':
                                           batch_size=BATCH_SIZE,
                                           verbose=0)
         logger.info('Average loss %f' % (average_loss,))
-
-        # result0 = reg.model.predict([Xv_test[:1], Xc_test[:1]])
 
         reg.save_model()

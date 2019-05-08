@@ -50,7 +50,7 @@ class CunningGambit(Gambit):
         # 優先度の推定
         damage_taken = AttackCommand.estimate_damage(target.attack, source.defence)
         damage_given = AttackCommand.estimate_damage(source.attack, target.defence)
-        return damage_taken / target.status.life * damage_given
+        return damage_taken / target.life_max * damage_given
 
     def select_command(self,
                        source: Unit,
