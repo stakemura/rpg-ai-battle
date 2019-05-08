@@ -80,3 +80,25 @@ if __name__ == '__main__':
     gambits[Side.PLAYER] = MLbasedGambit()
     win, logs = simulate_battle(teams, gambits, args.n_battle)
     print("Player(MLbased) win rate %7.5f%%" % (100.0 * win[0] / sum(win.values()),))
+
+    # プレイヤーのステータスをいじる
+    teams[0] = Team(0, [
+        Unit(Status(Side.PLAYER, 0, "knight2", 104, 76, 65, 32)),
+        Unit(Status(Side.PLAYER, 1, "archer2", 76, 52, 40, 50)),
+        Unit(Status(Side.PLAYER, 2, "thief2", 89, 52, 54, 68)),
+    ])
+
+    # バトルシミュレーション4 （プレイヤーの行動を、ランダムで決める）
+    gambits[Side.PLAYER] = NaiveGambit()
+    win, logs = simulate_battle(teams, gambits, args.n_battle)
+    print("Player(Naive) win rate %7.5f%%" % (100.0 * win[0] / sum(win.values()),))
+
+    # バトルシミュレーション5 （プレイヤーの行動を、チートして決める）
+    gambits[Side.PLAYER] = CunningGambit()
+    win, logs = simulate_battle(teams, gambits, args.n_battle)
+    print("Player(Cunning) win rate %7.5f%%" % (100.0 * win[0] / sum(win.values()),))
+
+    # バトルシミュレーション6 （プレイヤーの行動を、機械学習モデルで決める）
+    gambits[Side.PLAYER] = MLbasedGambit()
+    win, logs = simulate_battle(teams, gambits, args.n_battle)
+    print("Player(MLbased) win rate %7.5f%%" % (100.0 * win[0] / sum(win.values()),))

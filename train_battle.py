@@ -82,21 +82,22 @@ if __name__ == '__main__':
 
     ai = MLbasedGambit(is_training=True)
     mb = master_bar(range(len(ai.estimators)))
+    mb.names = [e.name for e in ai.estimators]
     n_class = len(statuses[Side.MONSTER])
-    for i, reg in enumerate(ai.estimators):
+    for i, reg in zip(mb, ai.estimators):
         logger.info('## Train %s %s' % (reg.name, reg.get_tag()))
 
-        if i == 0:
+        if i == 0:  # 被ダメージ
             _logs = list(filter(lambda l: l.target_side == Side.PLAYER, logs))
             y = np.array([[log.damage] for log in _logs], dtype=np.float32)
             Xv = np.array([[log.target_def] for log in _logs], dtype=np.float32)
             Xc = np.array([ai.id2vec(log.source_id) for log in _logs], dtype=np.float32)
-        elif i == 1:
+        elif i == 1:  # 与ダメージ
             _logs = list(filter(lambda l: l.source_side == Side.PLAYER, logs))
             y = np.array([[log.damage] for log in _logs], dtype=np.float32)
             Xv = np.array([[log.source_atk] for log in _logs], dtype=np.float32)
             Xc = np.array([ai.id2vec(log.target_id) for log in _logs], dtype=np.float32)
-        elif i == 2:
+        elif i == 2:  # 最大HP
             _logs = list(filter(lambda l: l.source_side == Side.PLAYER, logs))
             y = np.array([[log.damage_cumsum] for log in _logs], dtype=np.float32)
             Xv = np.array([[log.defeated] for log in _logs], dtype=np.float32)
